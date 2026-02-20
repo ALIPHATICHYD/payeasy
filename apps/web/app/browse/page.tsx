@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import FilterSidebar from '../../components/FilterSidebar'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Bed, Bath, UserCircle } from 'lucide-react'
 
@@ -86,6 +87,7 @@ export default function BrowsePage() {
 
     // Derived state from URL params to filter the mock data
     const [filteredProperties, setFilteredProperties] = useState<Property[]>(MOCK_PROPERTIES)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     // A simple mock filtering logic (in reality this would be API call)
     useEffect(() => {
@@ -125,11 +127,31 @@ export default function BrowsePage() {
                         <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold">P</div>
                         <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">PayEasy Browse</h1>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <span className="text-sm font-medium text-gray-600 hidden sm:block">Demo User</span>
-                        <div className="w-9 h-9 bg-gray-100 rounded-full border border-gray-200 flex items-center justify-center text-gray-400">
-                            <UserCircle size={20} />
+                    <div 
+                        className="relative"
+                        onMouseEnter={() => setIsDropdownOpen(true)}
+                        onMouseLeave={() => setIsDropdownOpen(false)}
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    >
+                        <div className="flex items-center gap-4 cursor-pointer">
+                            <span className="text-sm font-medium text-gray-600 hidden sm:block">Demo User</span>
+                            <div className="w-9 h-9 bg-gray-100 rounded-full border border-gray-200 flex items-center justify-center text-gray-400">
+                                <UserCircle size={20} />
+                            </div>
                         </div>
+                        
+                        {isDropdownOpen && (
+                            <div className="absolute right-0 top-full pt-2 w-48 z-50">
+                                <div className="bg-white rounded-md shadow-lg py-1 border border-gray-100">
+                                    <Link href="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        Login
+                                    </Link>
+                                    <Link href="/register" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        Register
+                                    </Link>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </header>
@@ -210,7 +232,7 @@ export default function BrowsePage() {
                                     </div>
                                     <h3 className="text-lg font-semibold text-gray-900 mb-1">No properties found</h3>
                                     <p className="text-sm text-gray-500 mb-6 max-w-xs mx-auto">
-                                        We couldn't find any matches for your current filters. Try adjusting your search criteria.
+                                        We couldn&apos;t find any matches for your current filters. Try adjusting your search criteria.
                                     </p>
                                     <button
                                         onClick={handleClearFilters}
