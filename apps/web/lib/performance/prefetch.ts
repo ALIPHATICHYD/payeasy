@@ -383,7 +383,6 @@ export function useNetworkAwarePrefetch(
 export function usePrefetchManager() {
   const manager = PrefetchManager.getInstance();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return {
     prefetch: (url: string, options?: { priority?: number; ttl?: number }) =>
       manager.prefetch(url, options),
